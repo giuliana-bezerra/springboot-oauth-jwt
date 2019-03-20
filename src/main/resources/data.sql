@@ -11,7 +11,6 @@ CREATE TABLE app_role (
   PRIMARY KEY (id)
 );
 
-
 CREATE TABLE app_user (
   id bigint NOT NULL ,
   first_name varchar(255) NOT NULL,

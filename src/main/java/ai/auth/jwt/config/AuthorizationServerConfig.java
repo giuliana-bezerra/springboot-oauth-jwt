@@ -20,46 +20,36 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
 
-    @Autowired
-    private TokenStore tokenStore;
+	@Autowired
+	private TokenStore tokenStore;
 
-    @Autowired
-    private JwtAccessTokenConverter accessTokenConverter;
+	@Autowired
+	private JwtAccessTokenConverter accessTokenConverter;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+	@Autowired
+	private AuthenticationManager authenticationManager;
 
-    @Autowired
-    private UserDetailsService userDetailsService;
+	@Autowired
+	private UserDetailsService userDetailsService;
 
-    @Autowired
-    private JdbcTemplate jdbcTemplate;
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
-    @Override
-    public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-        configurer
-                .jdbc(jdbcTemplate.getDataSource());
-    }
+	@Override
+	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
+		configurer.jdbc(jdbcTemplate.getDataSource());
+	}
 
+	@Override
+	public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+		endpoints.tokenStore(tokenStore).reuseRefreshTokens(false).accessTokenConverter(accessTokenConverter)
+				.authenticationManager(authenticationManager).userDetailsService(userDetailsService);
+	}
 
-    @Override
-    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-        endpoints.tokenStore(tokenStore)
-                .reuseRefreshTokens(false)
-                .accessTokenConverter(accessTokenConverter)
-                .authenticationManager(authenticationManager)
-                .userDetailsService(userDetailsService)
-                ;
-
-
-    }
-
-
-    @Override
-    public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        oauthServer.tokenKeyAccess("hasAuthority('ROLE_TRUSTED_CLIENT')").checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
-    }
-
-
+	@Override
+	public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+		oauthServer.tokenKeyAccess("hasAuthority('ROLE_TRUSTED_CLIENT')")
+				.checkTokenAccess("hasAuthority('ROLE_TRUSTED_CLIENT')");
+	}
 
 }

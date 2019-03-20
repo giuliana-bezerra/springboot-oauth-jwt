@@ -19,25 +19,25 @@ import java.util.List;
 @RestController
 @RequestMapping("/jwttest")
 public class ResourceController {
-    @Autowired
-    private GenericService userService;
+	@Autowired
+	private GenericService userService;
 
-    @Autowired
-    private TokenEndpoint tokenEndpoint;
+	@Autowired
+	private TokenEndpoint tokenEndpoint;
 
-    @Autowired
-    private TokenStore tokenStore;
+	@Autowired
+	private TokenStore tokenStore;
 
-    @RequestMapping(value ="/cities")
-    @PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
-    public List<RandomCity> getUser(){
-        return userService.findAllRandomCities();
-    }
+	@RequestMapping(value = "/cities")
+	@PreAuthorize("hasAuthority('ADMIN_USER') or hasAuthority('STANDARD_USER')")
+	public List<RandomCity> getUser() {
+		return userService.findAllRandomCities();
+	}
 
-    @RequestMapping(value ="/users", method = RequestMethod.GET)
-    @PreAuthorize("hasAuthority('ADMIN_USER')")
-    public List<User> getUsers(){
-        return userService.findAllUsers();
-    }
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
+	@PreAuthorize("hasAuthority('ADMIN_USER')")
+	public List<User> getUsers() {
+		return userService.findAllUsers();
+	}
 
 }
